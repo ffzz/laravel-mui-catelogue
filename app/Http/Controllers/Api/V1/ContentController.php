@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\GetContentListRequest;
+use App\Http\Requests\Api\V1\GetContentItemRequest;
+use App\Http\Requests\Api\V1\RefreshCacheRequest;
 use App\Services\Content\ContentService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Spatie\LaravelData\PaginatedDataCollection;
 
 class ContentController extends Controller
 {
@@ -21,12 +22,14 @@ class ContentController extends Controller
     /**
      * Get content catalogue
      */
-    public function index(Request $request): JsonResponse
+    public function index(GetContentListRequest $request): JsonResponse
     {
-        $page = $request->query('page', 1);
-        $perPage = $request->query('perPage', config('acorn.api.per_page'));
-        $contentType = $request->query('contentType');
-        $bypassCache = $request->boolean('noCache', false);
+        $validated = $request->validated();
+
+        $page = $validated['page'] ?? 1;
+        $perPage = $validated['perPage'] ?? config('acorn.api.per_page');
+        $contentType = $validated['contentType'] ?? null;
+        $bypassCache = $validated['noCache'] ?? false;
 
         // Build filters array
         $filters = [];
@@ -62,9 +65,10 @@ class ContentController extends Controller
     /**
      * Get specific content item
      */
-    public function show(int $id, Request $request): JsonResponse
+    public function show(int $id, GetContentItemRequest $request): JsonResponse
     {
-        $bypassCache = $request->boolean('noCache', false);
+        $validated = $request->validated();
+        $bypassCache = $validated['noCache'] ?? false;
 
         Log::info('API request: Get content item', [
             'id' => $id,
@@ -89,17 +93,12 @@ class ContentController extends Controller
     /**
      * Refresh cache for content items
      */
-    public function refreshCache(Request $request): JsonResponse
+    public function refreshCache(RefreshCacheRequest $request): JsonResponse
     {
-        $id = $request->query('id');
-        $contentType = $request->query('contentType');
+        $validated = $request->validated();
 
-        if (!$id && !$contentType) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Either content ID or content type must be provided',
-            ], 400);
-        }
+        $id = $validated['id'] ?? null;
+        $contentType = $validated['contentType'] ?? null;
 
         Log::info('API request: Refresh cache', [
             'id' => $id,
