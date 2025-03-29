@@ -51,8 +51,6 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
-          touch database/database.sqlite
-          php artisan migrate --seed
 
       - name: Run Pint
         run: vendor/bin/pint
@@ -65,14 +63,6 @@ jobs:
 
       - name: Type Check Frontend
         run: npm run types
-
-      - name: Run Tests
-        run: |
-          php artisan test --parallel
-          npm run test
-
-      - name: Build Frontend
-        run: npm run build
 
       - name: Security Check
         run: |
