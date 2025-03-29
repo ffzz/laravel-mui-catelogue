@@ -20,7 +20,24 @@ return [
 
     'cache' => [
         'enabled' => env('ACORN_CACHE_ENABLED', true),
-        'ttl' => env('ACORN_CACHE_TTL', 60 * 15), // 15 minutes
+        'ttl' => env('ACORN_CACHE_TTL', 60 * 15), // 15 minutes default
+        'version' => env('ACORN_CACHE_VERSION', 'v1'), // Cache version for easy invalidation
+
+        // Content type specific cache durations (in seconds)
+        'content_types' => [
+            'course' => env('ACORN_CACHE_COURSE_TTL', 60 * 15), // 15 minutes
+            'live learning' => env('ACORN_CACHE_LIVE_LEARNING_TTL', 60 * 5), // 5 minutes
+            'resource' => env('ACORN_CACHE_RESOURCE_TTL', 60 * 30), // 30 minutes
+            'video' => env('ACORN_CACHE_VIDEO_TTL', 60 * 30), // 30 minutes
+            'page' => env('ACORN_CACHE_PAGE_TTL', 60 * 60), // 1 hour
+            'partnered content' => env('ACORN_CACHE_PARTNERED_CONTENT_TTL', 60 * 60), // 1 hour
+        ],
+
+        // Background refresh settings
+        'background_refresh' => [
+            'enabled' => env('ACORN_CACHE_BACKGROUND_REFRESH', true),
+            'threshold' => env('ACORN_CACHE_REFRESH_THRESHOLD', 0.8), // Refresh when 80% of TTL has elapsed
+        ],
     ],
 
     'retry' => [

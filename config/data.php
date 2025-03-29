@@ -38,6 +38,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Custom Transformers
+    |--------------------------------------------------------------------------
+    |
+    | Configure the transformers that will be used when transforming data
+    | The key should be the class or interface and the value the transformer
+    |
+    */
+    'transformers' => [
+        //          
+        // such as: \DateTime::class => \App\Data\Transformers\DateTimeTransformer::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Include or Exclude Fields
     |--------------------------------------------------------------------------
     |
@@ -45,12 +59,8 @@ return [
     | This will affect the result when serialising Data objects to arrays or JSON.
     |
     */
-    'transformers' => [
-        // Default set of attributes to include. Typically empty if not specified
-        'default_includes' => [],
-
-        // Mapping of response types to include arrays
-        // 'json' => ['comments', 'posts'],
-        // 'array' => ['comments'],
+    'features' => [
+        'include_and_exclude_properties' => true,
+        'cast_and_transform_iterables' => true,
     ],
 ];
