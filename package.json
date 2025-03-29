@@ -12,7 +12,7 @@
         "types": "tsc --noEmit",
         "prepare": "husky",
         "phpstan": "vendor/bin/phpstan analyse",
-        "phpstan:baseline": "vendor/bin/phpstan analyse --generate-baseline",
+        "phpstan:baseline": "vendor/bin/phpstan analyse --generate-baseline --allow-empty-baseline",
         "phpstan:clear-baseline": "rm -f phpstan-baseline.neon",
         "test": "vitest run",
         "test:watch": "vitest",
