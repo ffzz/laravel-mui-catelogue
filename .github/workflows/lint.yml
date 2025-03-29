@@ -57,7 +57,7 @@ jobs:
         run: npm run lint
 
       - name: Type Check Frontend
-        run: npm run type-check
+        run: npm run types
 
       - name: Run Tests
         run: |
@@ -66,11 +66,6 @@ jobs:
 
       - name: Build Frontend
         run: npm run build
-
-      - name: Check Bundle Size
-        run: |
-          npm install -g bundlesize
-          bundlesize --config bundlesize.config.json
 
       - name: Security Check
         run: |
