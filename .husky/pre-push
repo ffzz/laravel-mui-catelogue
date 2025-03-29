@@ -1,0 +1,16 @@
+echo "Running pre-push hooks..."
+
+echo "Running frontend lint check..."
+npm run lint
+
+echo "Running frontend unit tests..."
+npm run test
+
+echo "Running backend unit tests..."
+npm run test:backend
+
+echo "Running PHPStan analysis..."
+npm run phpstan
+
+echo "Running PHPStan baseline generation..."
+npm run phpstan:baseline

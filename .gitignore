@@ -24,3 +24,4 @@ yarn-error.log
 /.zed
 /.cursor
 .DS_Store
+phpstan-baseline.neon
