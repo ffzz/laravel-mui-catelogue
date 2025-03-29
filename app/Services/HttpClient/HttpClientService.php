@@ -6,8 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\RequestInterface;
@@ -85,7 +83,7 @@ class HttpClientService
                             'body' => (string) $response->getBody(),
                         ]);
 
-                        // 重新设置回body的位置指针到开头
+                        // Reset the body position pointer back to the beginning
                         $response->getBody()->rewind();
 
                         return $response;
