@@ -34,19 +34,30 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Cache Node modules
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.7.0
+          run_install: false
+
+      - name: Cache PNPM dependencies
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: .pnpm-cache
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-pnpm-
 
       - name: Install Dependencies
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm ci
-      
+          pnpm install
+
       - name: Prepare Laravel Application
         run: |
           cp .env.example .env
@@ -56,18 +67,18 @@ jobs:
         run: vendor/bin/pint
 
       - name: Format Frontend
-        run: npm run format
+        run: pnpm run format
 
       - name: Lint Frontend
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Type Check Frontend
-        run: npm run types
+        run: pnpm run types
 
       - name: Security Check
         run: |
           composer audit
-          npm audit
+          pnpm audit
 
       # - name: Commit Changes
       #   uses: stefanzweifel/git-auto-commit-action@v5

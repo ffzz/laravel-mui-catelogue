@@ -29,13 +29,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.7.0
+          run_install: false
+
+      - name: Cache PNPM dependencies
+        uses: actions/cache@v4
+        with:
+          path: .pnpm-cache
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install Node Dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Build Assets
-        run: npm run build
+        run: pnpm run build
 
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
