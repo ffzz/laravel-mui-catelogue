@@ -1,27 +1,130 @@
-# Laravel MUI Catalogue
+# Laravel MUI Content Catalogue 📚
 
-A modern Laravel backend with React.js frontend application that displays a catalogue of learning content fetched from the Acorn External Catalogue API.
+![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![Material UI](https://img.shields.io/static/v1?label=Material%20UI&message=7.0&color=0081CB&style=for-the-badge&logo=mui&logoColor=white)
+![PNPM](https://img.shields.io/badge/PNPM-10.7-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-Passing-success?style=for-the-badge)
 
-## Features
+A modern application built with Laravel and React.js that retrieves and displays learning content from the Acorn External Catalogue API.
 
-- **Content Type Specialisation**: Implements a robust class hierarchy for different content types (Course, LiveLearning, Video, etc.)
-- **Efficient Caching**: Implements multi-level caching for API responses to improve performance
-- **Type-Safe Data Handling**: Uses Laravel Data v4 for strong typing and validation
-- **Resilient API Integration**: Features retry mechanisms and comprehensive error handling
-- **Modern UI**: Clean, responsive Material UI interface for displaying learning content
+## ✨ Awesome Features
 
-## Tech Stack
+- **Content Type Specialisation** 🏗️: Robust class hierarchy for different content types (Course, LiveLearning, Video, etc.) using both inheritance and composition
+- **Fast Caching** ⚡: Multi-level caching strategy that significantly improves API response performance
+- **Type-Safe Data Handling** 🛡️: Leverages Laravel Data v4 for reliable typing and validation
+- **Resilient API Integration** 🔄: Includes retry mechanisms and comprehensive error handling that ensures reliability
+- **Slick UI** 💎: Clean, responsive Material UI interface that makes learning content look professional
+- **High Code Quality** 🧹: ESLint, Prettier, PHP CS Fixer and PHPStan keeping everything well-maintained
+- **Comprehensive Automated Tests** ✅: Front and back-end testing covering all the critical components
+- **Strict Commit Standards** 📝: Conventional Commits ensuring your Git history remains organized and consistent
+
+## 🛠️ Main Tech Stack
 
 - **Backend**: Laravel 12.x
-- **Frontend**: React 19 with Material UI
+- **Frontend**: React 19 + Material UI 7.0 + @tanstack/react-query
 - **Data Layer**: Spatie Laravel Data
-- **HTTP Client**: Guzzle with middleware for logging, caching and retries
-- **Testing**: PHPUnit and for integration testing
+- **HTTP Client**: Guzzle with logging, caching and retry middleware
+- **Testing**: PHPUnit and Pest for integration tests, Vitest for frontend
+- **Code Linter**: PHPStan, ESLint, Prettier
+- **Package Management**: PNPM 10.7
+- **CI/CD**: GitHub Actions
 
-## Installation
+## 📁 Project Structure
+
+```
+laravel-mui-catalogue/
+├── app/                         # Core application code
+│   ├── Data/                    # Data models (using Laravel Data)
+│   │   ├── Content/             # Content class composition implementation (Alternative)
+│   │   ├── Content.php          # Base content model (inheritance)
+│   │   ├── CourseData.php       # Course data model
+│   │   └── ...                  # Other content type models
+│   ├── Enums/                   # Enumerations - Content type
+│   ├── Http/                    # HTTP-related code (API controllers)
+│   │   └── Controllers/         # API and Web controllers
+│   ├── Jobs/                    # Queue jobs
+│   ├── Services/                # Service layer
+│   │   ├── Acorn/              # Acorn API service
+│   │   ├── Content/            # Content service
+│   │   └── HttpClient/         # HTTP client service (Guzzle)
+│   └── Providers/              # Service providers
+├── resources/                   # Frontend resources
+│   ├── js/                      # React app code
+│   └── css/                     # Stylesheets
+├── tests/                       # Test code
+│   ├── Feature/                 # Feature tests
+│   │   ├── Api/                 # API tests
+│   │   ├── Integration/         # Integration tests
+│   │   └── Services/            # Service tests
+│   └── Unit/                    # Unit tests
+├── .github/                     # GitHub config
+│   └── workflows/               # GitHub Actions workflows
+│       ├── lint.yml             # Code quality checks
+│       └── tests.yml            # Automated tests
+├── config/                      # Configuration files
+├── routes/                      # Route definitions
+└── ...                          # Other project files
+```
+
+## 🧩 Content Type System
+
+We've implemented the content type system in two different ways to cater to different architectural needs:
+
+### 1. Inheritance Approach (Main Implementation)
+
+```
+app/Data/Content (Base class)
+├── CourseData
+├── LiveLearningData
+├── VideoData
+├── ResourceData
+├── ProgramData
+├── PageData
+├── PartnerContentData
+└── UnknownContentData (Fallback)
+```
+
+### 2. Composition Approach (Alternative)
+
+```
+app/Data/Content/Content (Base class)
+├── Content/Course
+├── Content/LiveLearning
+├── Content/Video
+├── Content/Resource
+├── Content/Program
+├── Content/Page
+├── Content/PartnerContent
+└── Content/UnknownContent
+```
+
+## 🔄 Caching Strategy
+
+The system implements a clever caching strategy to optimise Acorn API access:
+
+### Key Features
+
+1. **Content Type-Specific Caching**: Different content types get custom cache durations
+2. **Cache Version Control**: Version changes automatically refresh all caches
+3. **Background Refresh**: When cache gets close to expiry, it refreshes in the background while still serving current cached data
+4. **Cache Bypass**: API supports `noCache=true` parameter for direct data retrieval
+5. **Manual Refresh**: API endpoints for manually refreshing specific content caches
+
+## 🚀 Installation & Setup
+
+### Requirements
+
+- **PHP 8.3+**
+- **Node.js 22+**
+- **PNPM 10.7+**
+- **SQLite** (development environment)
+
+### Getting Started
 
 ```bash
-# Clone the repository
+# Clone the repo
 git clone https://github.com/yourusername/laravel-mui-catalogue.git
 cd laravel-mui-catalogue
 
@@ -29,202 +132,65 @@ cd laravel-mui-catalogue
 composer install
 
 # Install JavaScript dependencies
-npm install
+pnpm install
 
 # Set up environment
 cp .env.example .env
 php artisan key:generate
 
-# Configure .env with your Acorn API credentials
+# Configure Acorn API credentials in .env
 # ACORN_API_BASE_URL=https://staging.acornlms.com
 # ACORN_API_TENANCY_ID=3
-# ACORN_API_TOKEN=
+# ACORN_API_TOKEN=...
 
 # Run migrations (if applicable)
 php artisan migrate
 
-# Build assets
-npm run dev
 ```
 
-## Docker Development Environment
-
-This project has been fully Dockerised to establish a consistent development environment for all team members. The Docker setup ensures that everyone on the team works with identical development conditions regardless of their local machine setup.
-
-### Setting Up the Development Environment with Docker
+### Running the App
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/laravel-mui-catalogue.git
-cd laravel-mui-catalogue
-
-# Copy the environment configuration file
-cp .env.docker .env
-
-# Modify .env configuration as needed, particularly the Redis settings
-
-# Build and start the development containers
-docker-compose up -d
-
-# Check the container status
-docker-compose ps
-```
-
-Visit http://localhost:8000 to access the development environment.
-
-### Development Container Services
-
-The Docker development environment includes the following services:
-
-1. **app** - Laravel PHP application service
-2. **web** - Nginx web server
-3. **redis** - Redis for caching and queue services
-4. **queue** - Laravel queue worker
-5. **scheduler** - Laravel scheduler service
-
-### Common Docker Commands for Development
-
-```bash
-# Start all services
-docker-compose up -d
-
-# Stop all services
-docker-compose down
-
-# View service logs
-docker-compose logs -f
-
-# View logs for a specific service
-docker-compose logs -f app
-
-# Access the application container
-docker-compose exec app sh
-
-# Run Artisan commands in the container
-docker-compose exec app php artisan list
-```
-
-### Customising Redis Configuration for Development
-
-The default configuration uses the Redis service within the container. If you need to connect to an external Redis service, modify the following settings in your `.env` file:
-
-```
-REDIS_HOST=your-redis-host
-REDIS_PASSWORD=your-redis-password
-REDIS_PORT=6379
-```
-
-Note: If using a custom Redis service, you may also need to modify the queue, cache, and session driver configurations.
-
-## Usage
-
-```bash
-# Start the Laravel development server
+# Start Laravel dev server
 php artisan serve
 
-# In a separate terminal, start the frontend dev server
-npm run dev
+# Start laravel queue worker
+php artisan queue:work
+
+# In another terminal, start frontend dev server
+pnpm run dev
 ```
 
-Visit http://localhost:8000 to view the application.
+Head to http://localhost:8000 to check it out.
 
-## Architecture
+### Development Commands
 
-### Backend
+```bash
+# Start dev server with hot reload
+pnpm run dev
 
-The backend follows a layered architecture:
+# Build frontend assets
+pnpm run build
 
-1. **Controllers**: Handle HTTP requests and delegate to services
-2. **Services**: Contain business logic and interact with external APIs
-3. **Data Layer**: Transforms API responses into strongly-typed objects
-4. **HTTP Client**: Handles communication with external APIs
+# Run PHP tests
+pnpm run test:backend
+# or
+php artisan test
 
-### Content Type System
+# Run frontend tests
+pnpm run test
 
-The application uses a sophisticated inheritance-based content type system:
+# Check code quality
+pnpm run lint
+pnpm run phpstan
 
-- `Content`: Base class with shared properties and methods
-- Specialised classes for each content type:
-    - `CourseData`
-    - `LiveLearningData`
-    - `VideoData`
-    - `ResourceData`
-    - `ProgramData`
-    - `PageData`
-    - `PartnerContentData`
-    - `UnknownContentData` (fallback)
-
-### API Integration
-
-The Acorn API integration features:
-
-- Versioned API endpoints
-- Comprehensive error handling
-- Response caching for performance
-- Retry mechanisms for resilience
-- Detailed logging for debugging
-
-## Development Highlights
-
-### Strong Typing
-
-Using Laravel Data v4, all content types are strongly typed with validation rules, ensuring data integrity throughout the application.
-
-### Factory Pattern
-
-The `ContentDataFactory` creates appropriate content instances based on type, providing a clean interface for content creation.
-
-### Caching Strategy
-
-Implements a multi-tiered caching strategy:
-
-- HTTP response caching
-- Processed content caching
-- Configurable TTL and cache invalidation
-
-### Testing
-
-Comprehensive integration tests ensure the API connection is reliable and data processing works correctly, with special handling for problematic content types.
-
-## Caching Strategy
-
-The system implements an intelligent caching strategy to optimise ACORN API access performance. Key features include:
-
-### Cache Configuration
-
-Cache configuration is located in `config/acorn.php`:
-
-```php
-'cache' => [
-    'enabled' => true,  // Enable/disable caching
-    'ttl' => 900,       // Default cache time (seconds)
-    'version' => 'v1',  // Cache version for easy invalidation
-    'content_types' => [
-        'course' => 900,           // Course: 15 minutes
-        'live learning' => 300,    // Live Learning: 5 minutes
-        'resource' => 1800,        // Resource: 30 minutes
-        'video' => 1800,          // Video: 30 minutes
-        'page' => 3600,           // Page: 1 hour
-        'partnered content' => 3600, // Partnered Content: 1 hour
-    ],
-    'background_refresh' => [
-        'enabled' => true,      // Enable background refresh
-        'threshold' => 0.8,     // Trigger background refresh when cache reaches 80% of TTL
-    ],
-],
+# Format code
+pnpm run format
 ```
 
-### Key Features
+## 📝 API Endpoints
 
-1. **Content Type-Specific Caching**: Different content types have customised cache durations
-2. **Cache Version Control**: Version changes automatically refresh all caches
-3. **Background Refresh**: When cache nears expiry, refresh occurs in background whilst returning current cached data
-4. **Cache Bypass**: API supports `noCache=true` parameter for direct data retrieval
-5. **Manual Refresh**: Provides API endpoints for manually refreshing specific content caches
-
-### API Endpoints
-
-#### Retrieve Content List
+### Get Content List
 
 ```
 GET /api/v1/content?page=1&perPage=10&contentType=course&noCache=false
@@ -232,31 +198,12 @@ GET /api/v1/content?page=1&perPage=10&contentType=course&noCache=false
 
 Parameters:
 
-- `page` (optional): Page number (integer, minimum 1)
-- `perPage` (optional): Number of items to display per page (integer, minimum 1, maximum 100)
-- `contentType` (optional): Filter by content type (must be one of: course, live learning, resource, video, program, page, partnered content)
-- `noCache` (optional): Whether to bypass cache (boolean: true/false)
+- `page` (optional): Page number (integer, min 1)
+- `perPage` (optional): Items per page (integer, min 1, max 100)
+- `contentType` (optional): Filter by content type (options: course, live learning, resource, video, program, page, partner content)
+- `noCache` (optional): Bypass cache (boolean: true/false)
 
-Validation Rules:
-
-- All parameters are optional
-- Invalid parameters will return a 422 status code with detailed error messages
-- Default values: page=1, perPage=10 (from config)
-
-Example Error Response:
-
-```json
-{
-    "message": "The given data was invalid.",
-    "errors": {
-        "contentType": ["The content type must be one of: course, live learning, resource, video, program, page, or partnered content."],
-        "page": ["The page number must be at least 1."],
-        "perPage": ["The items per page cannot exceed 100."]
-    }
-}
-```
-
-#### Retrieve Specific Content Item
+### Get Specific Content Item
 
 ```
 GET /api/v1/content/{id}?noCache=false
@@ -265,9 +212,9 @@ GET /api/v1/content/{id}?noCache=false
 Parameters:
 
 - `id`: Content ID
-- `noCache`: Whether to bypass cache (default false)
+- `noCache`: Bypass cache (default false)
 
-#### Refresh Cache
+### Refresh Cache
 
 ```
 POST /api/v1/content/refresh-cache?id=123
@@ -279,106 +226,77 @@ or
 POST /api/v1/content/refresh-cache?contentType=course
 ```
 
-Parameters (at least one is required):
+Parameters (at least one required):
 
 - `id`: Refresh cache for specific content item
 - `contentType`: Refresh cache for all content of specific type
 
-## Development Guide
+## ✅ Test Results
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/laravel-mui-catalogue.git
-cd laravel-mui-catalogue
+Here are the test results:
 
-# Install PHP dependencies
-composer install
+### Backend Tests
 
-# Install JavaScript dependencies
-npm install
+<img src="public/readme-images/backend-test-results.jpg" alt="Backend Test Results" width="800"/>
 
-# Set up environment
-cp .env.example .env
-php artisan key:generate
+### Frontend Tests
 
-# Configure .env with your Acorn API credentials
-# ACORN_API_BASE_URL=https://staging.acornlms.com
-# ACORN_API_TENANCY_ID=3
-# ACORN_API_TOKEN=WTZ1RHJ3RjdPOW95N0tDT1pvWFNwR2tTQ042ejBKVHVMRUdsTE1PRQ==
+<img src="public/readme-images/frontend-test-results.jpg" alt="Frontend Test Results" width="800"/>
 
-# Run migrations (if applicable)
-php artisan migrate
+### PHPStan Analysis
 
-# Build assets
-npm run dev
-```
+<img src="public/readme-images/phpstan-analyse-result.jpg" alt="PHPStan Results" width="800"/>
 
-## Usage
+## 📊 Code Quality
 
-```bash
-# Start the Laravel development server
-php artisan serve
+We're serious about code quality:
 
-# In a separate terminal, start the frontend dev server
-npm run dev
-```
+- **PHPStan** static analysis for reliable type safety
+- **ESLint** and **Prettier** keeping JavaScript/TypeScript code consistent
+- **Husky** pre-commit hooks preventing problematic code from being committed
+- **GitHub Actions** automatically running tests and quality checks
 
-Visit http://localhost:8000 to view the application.
+## 🔒 Automated Quality Checks
 
-## Architecture
+We've implemented automated quality checks to maintain high code standards:
 
-### Backend
+### Pre-Commit Hooks
 
-The backend follows a layered architecture:
+Using Husky, we run lint-staged to ensure code quality before each commit:
 
-1. **Controllers**: Handle HTTP requests and delegate to services
-2. **Services**: Contain business logic and interact with external APIs
-3. **Data Layer**: Transforms API responses into strongly-typed objects
-4. **HTTP Client**: Handles communication with external APIs
+- Formatting checks with Prettier
+- Linting with ESLint
+- Type checking with TypeScript
 
-### Content Type System
+### Pre-Push Hooks
 
-The application uses a sophisticated inheritance-based content type system:
+Before code is pushed to the repository, these checks run automatically:
 
-- `Content`: Base class with shared properties and methods
-- Specialised classes for each content type:
-    - `CourseData`
-    - `LiveLearningData`
-    - `VideoData`
-    - `ResourceData`
-    - `ProgramData`
-    - `PageData`
-    - `PartnerContentData`
-    - `UnknownContentData` (fallback)
+- Frontend lint checks
+- Frontend unit tests (Vitest)
+- Backend unit tests (PHPUnit/Pest)
+- PHPStan static analysis
 
-### API Integration
+### GitHub Actions Workflows
 
-The Acorn API integration features:
+#### Code Quality (lint.yml)
 
-- Versioned API endpoints
-- Comprehensive error handling
-- Response caching for performance
-- Retry mechanisms for resilience
-- Detailed logging for debugging
+Ensures code quality on every push and pull request:
 
-## Development Highlights
+- PHP code style enforcement with Laravel Pint
+- Frontend code formatting with Prettier
+- ESLint for JavaScript/TypeScript
+- Type checking for frontend code
+- Security audit for both PHP and JavaScript dependencies
 
-### Strong Typing
+#### Automated Tests (tests.yml)
 
-Using Laravel Data v4, all content types are strongly typed with validation rules, ensuring data integrity throughout the application.
+Verifies application functionality on every push and pull request:
 
-### Factory Pattern
+- Runs on PHP 8.4 and Node.js 22
+- Builds frontend assets
+- Sets up testing environment
+- Runs backend tests excluding external API calls
+- Configures mock API endpoints for isolated testing
 
-The `ContentDataFactory` creates appropriate content instances based on type, providing a clean interface for content creation.
-
-### Caching Strategy
-
-Implements a multi-tiered caching strategy:
-
-- HTTP response caching
-- Processed content caching
-- Configurable TTL and cache invalidation
-
-### Testing
-
-Comprehensive integration tests ensure the API connection is reliable and data processing works correctly, with special handling for problematic content types.
+These automated checks help us maintain code quality and prevent regressions, ensuring the codebase stays clean and maintainable.
