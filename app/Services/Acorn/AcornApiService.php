@@ -12,7 +12,7 @@ class AcornApiService
     protected string $baseUrl;
     protected string $tenancyId;
     protected string $apiVersion;
-    protected string $token;
+    protected ?string $token;
     protected int $perPage;
 
     public function __construct(HttpClientService $httpClient)
@@ -21,7 +21,7 @@ class AcornApiService
         $this->baseUrl = Config::get('acorn.api.base_url');
         $this->tenancyId = Config::get('acorn.api.tenancy_id');
         $this->apiVersion = Config::get('acorn.api.version');
-        $this->token = Config::get('acorn.api.token');
+        $this->token = Config::get('acorn.api.token') ?? '';
         $this->perPage = Config::get('acorn.api.per_page');
     }
 
@@ -57,12 +57,15 @@ class AcornApiService
             'params' => $params,
         ]);
 
-        // Set request options
+        // Set request options with default empty headers
         $options = [
-            'headers' => [
-                'Authorization' => "Bearer {$this->token}",
-            ],
+            'headers' => [],
         ];
+        
+        // Only add Authorization header if token is not empty
+        if (!empty($this->token)) {
+            $options['headers']['Authorization'] = "Bearer {$this->token}";
+        }
 
         // Make the API request
         $response = $this->httpClient->get(

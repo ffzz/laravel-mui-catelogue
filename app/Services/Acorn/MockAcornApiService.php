@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Log;
 class MockAcornApiService extends AcornApiService
 {
     /**
+     * Override constructor to avoid token dependency in tests
+     */
+    public function __construct($httpClient)
+    {
+        parent::__construct($httpClient);
+        // Ensure we don't depend on token in testing environment
+        $this->token = 'mock-token';
+    }
+
+    /**
      * Mock the external catalogue response
      * 
      * @param array $params Query parameters

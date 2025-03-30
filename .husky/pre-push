@@ -10,7 +10,8 @@ echo "Running backend unit tests..."
 npm run test:backend
 
 echo "Running PHPStan analysis..."
-npm run phpstan
+composer run phpstan -- --no-ansi
 
-echo "Running PHPStan baseline generation..."
-npm run phpstan:baseline
+# Only run baseline generation when explicitly requested
+# echo "Running PHPStan baseline generation..."
+# npm run phpstan:baseline

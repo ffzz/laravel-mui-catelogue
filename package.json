@@ -12,7 +12,7 @@
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "types": "tsc --noEmit",
         "prepare": "husky",
-        "phpstan": "vendor/bin/phpstan analyse",
+        "phpstan": "composer run-script phpstan",
         "phpstan:baseline": "vendor/bin/phpstan analyse --generate-baseline --allow-empty-baseline",
         "phpstan:clear-baseline": "rm -f phpstan-baseline.neon",
         "test": "vitest run",
