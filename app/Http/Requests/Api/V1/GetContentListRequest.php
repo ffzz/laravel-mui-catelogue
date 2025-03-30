@@ -39,14 +39,14 @@ class GetContentListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page' => 'nullable|integer|min:1',
-            'perPage' => 'nullable|integer|min:1|max:100',
+            'page' => ['nullable', 'integer', 'min:1'],
+            'perPage' => ['nullable', 'integer', 'min:1', 'max:100'],
             'contentType' => [
                 'nullable',
                 'string',
                 new Enum(ContentType::class)
             ],
-            'noCache' => 'nullable|boolean'
+            'noCache' => ['nullable', 'boolean']
         ];
     }
 

@@ -75,7 +75,7 @@ class HttpClientService
                 ]);
 
                 return $handler($request, $options)->then(
-                    function (ResponseInterface $response) use ($request) {
+                    function (ResponseInterface $response) {
                         Log::debug('API Response', [
                             'statusCode' => $response->getStatusCode(),
                             'reasonPhrase' => $response->getReasonPhrase(),

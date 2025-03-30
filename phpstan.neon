@@ -14,7 +14,6 @@ parameters:
         - bootstrap/cache/*
         - vendor/*
     ignoreErrors:
-        - '#Call to an undefined method PHPUnit\\Framework\\TestCase::[a-zA-Z]+\(\)#'
         - '#Undefined variable: \$this#'
     bootstrapFiles:
         - vendor/autoload.php 

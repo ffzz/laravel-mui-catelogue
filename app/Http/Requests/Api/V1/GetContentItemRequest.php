@@ -37,7 +37,7 @@ class GetContentItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'noCache' => 'nullable|boolean'
+            'noCache' => ['nullable', 'boolean']
         ];
     }
 

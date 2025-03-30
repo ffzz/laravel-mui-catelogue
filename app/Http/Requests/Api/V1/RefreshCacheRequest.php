@@ -24,7 +24,7 @@ class RefreshCacheRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'nullable|integer|min:1',
+            'id' => ['nullable', 'integer', 'min:1'],
             'contentType' => ['nullable', 'string', new Enum(ContentType::class)]
         ];
     }
