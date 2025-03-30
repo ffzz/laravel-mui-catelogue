@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Enums\ContentType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class RefreshCacheRequest extends FormRequest
 {
@@ -23,11 +25,7 @@ class RefreshCacheRequest extends FormRequest
     {
         return [
             'id' => 'nullable|integer|min:1',
-            'contentType' => [
-                'nullable',
-                'string',
-                'in:course,live learning,resource,video,program,page,partnered content'
-            ]
+            'contentType' => ['nullable', 'string', new Enum(ContentType::class)]
         ];
     }
 
@@ -41,7 +39,7 @@ class RefreshCacheRequest extends FormRequest
         return [
             'id.integer' => 'The content ID must be a whole number.',
             'id.min' => 'The content ID must be at least 1.',
-            'contentType.in' => 'The content type must be one of: course, live learning, resource, video, program, page, or partnered content.',
+            'contentType.enum' => 'The content type must be one of: ' . implode(', ', ContentType::values()) . '.',
         ];
     }
 
@@ -53,10 +51,6 @@ class RefreshCacheRequest extends FormRequest
      */
     public function withValidator($validator): void
     {
-        $validator->after(function ($validator) {
-            if (!$this->input('id') && !$this->input('contentType')) {
-                $validator->errors()->add('parameters', 'Either content ID or content type must be provided.');
-            }
-        });
+        // Allow cache refresh without parameters
     }
 }

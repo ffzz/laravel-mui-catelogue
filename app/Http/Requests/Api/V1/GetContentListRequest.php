@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Enums\ContentType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class GetContentListRequest extends FormRequest
 {
@@ -42,7 +44,7 @@ class GetContentListRequest extends FormRequest
             'contentType' => [
                 'nullable',
                 'string',
-                'in:course,live learning,resource,video,program,page,partnered content'
+                new Enum(ContentType::class)
             ],
             'noCache' => 'nullable|boolean'
         ];
@@ -56,7 +58,7 @@ class GetContentListRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'contentType.in' => 'The content type must be one of: course, live learning, resource, video, program, page, or partnered content.',
+            'contentType.enum' => 'The content type must be one of: ' . implode(', ', ContentType::values()) . '.',
             'page.integer' => 'The page number must be a whole number.',
             'page.min' => 'The page number must be at least 1.',
             'perPage.integer' => 'The items per page must be a whole number.',

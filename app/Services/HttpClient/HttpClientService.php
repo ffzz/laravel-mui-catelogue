@@ -33,7 +33,7 @@ class HttpClientService
         $this->defaultOptions = [
             'http_errors' => false,
             'connect_timeout' => 10,
-            'timeout' => 30,
+            'timeout' => 300, // 300 seconds (5 minutes)
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',

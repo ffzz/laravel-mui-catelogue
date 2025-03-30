@@ -92,6 +92,7 @@ class ContentController extends Controller
 
     /**
      * Refresh cache for content items
+     * If no id or contentType provided, refreshes cache for all content types
      */
     public function refreshCache(RefreshCacheRequest $request): JsonResponse
     {
@@ -103,6 +104,7 @@ class ContentController extends Controller
         Log::info('API request: Refresh cache', [
             'id' => $id,
             'content_type' => $contentType,
+            'refresh_all' => (!$id && !$contentType)
         ]);
 
         $result = $this->contentService->refreshCache($id, $contentType);
