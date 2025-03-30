@@ -1,9 +1,9 @@
+import ContentModal from '@/components/modal/ContentModal';
 import { ContentItem } from '@/types/content';
 import LoginIcon from '@mui/icons-material/Login';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Button, Stack } from '@mui/material';
 import { useState } from 'react';
-import ContentModal from '../ContentModal';
 
 interface CardActionButtonsProps {
     contentUrl: string;

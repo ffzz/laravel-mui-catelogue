@@ -1,7 +1,4 @@
-import ContentFilter from '@/components/contentPage/ContentFilter';
-import ContentGrid from '@/components/contentPage/ContentGrid';
-import Intro from '@/components/contentPage/Intro';
-import SimplePagination from '@/components/contentPage/SimplePagination';
+import { ContentFilter, ContentGrid, Intro, SimplePagination } from '@/components/contentPage';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import LoadingContent from '@/components/LoadingContent';
 import NoContentDisplay from '@/components/NoContentDisplay';

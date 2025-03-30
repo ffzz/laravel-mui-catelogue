@@ -1,5 +1,5 @@
+import StatusColourDot from '@/components/card/StatusColourDot';
 import { Typography } from '@mui/material';
-import StatusColourDot from './StatusColourDot';
 
 const CardTitle = ({ displayName, updatedDate, contentStatus }: { displayName: string; updatedDate: string; contentStatus: string }) => {
     return (

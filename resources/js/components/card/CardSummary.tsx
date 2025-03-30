@@ -1,5 +1,6 @@
 import { createSafeHtml } from '@/lib/utils';
 import { Box, Typography } from '@mui/material';
+
 const CardSummary = ({ contentSummary }: { contentSummary: string }) => {
     return (
         <Box

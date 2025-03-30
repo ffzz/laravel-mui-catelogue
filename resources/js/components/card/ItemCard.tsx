@@ -1,12 +1,8 @@
 import { ContentItem, ContentTypeColor } from '@/types/content';
 
-import { Card, CardActions, CardContent, Chip, Fade } from '@mui/material';
-
+import { CardActionButtons, CardImage, CardSummary, CardTitle } from '@/components/card';
 import { formattedDate, removeSpecialSymbols } from '@/lib/utils';
-import CardActionButtons from './CardActionButtons';
-import CardImage from './CardImage';
-import CardSummary from './CardSummary';
-import CardTitle from './CardTitle';
+import { Card, CardActions, CardContent, Chip, Fade } from '@mui/material';
 
 const ItemCard = ({ content, contentTypeColor }: { content: ContentItem; contentTypeColor: ContentTypeColor }) => {
     const displayName = removeSpecialSymbols(content?.fullname);
