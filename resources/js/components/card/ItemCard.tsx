@@ -41,7 +41,7 @@ const ItemCard = ({ content, contentTypeColor }: { content: ContentItem; content
                     <CardSummary contentSummary={content.summary} />
                 </CardContent>
                 <CardActions sx={{ padding: 2, paddingTop: 0 }}>
-                    <CardActionButtons contentUrl={content.url} contentId={content.id} />
+                    <CardActionButtons contentUrl={content.url} content={content} />
                 </CardActions>
             </Card>
         </Fade>

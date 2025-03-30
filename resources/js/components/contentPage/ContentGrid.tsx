@@ -1,6 +1,6 @@
+import ItemCard from '@/components/card/ItemCard';
 import { ContentItem, ContentTypeColor } from '@/types/content';
 import { Box } from '@mui/material';
-import ItemCard from './ItemCard';
 
 const ContentGrid = ({ contents, contentTypeColor }: { contents: ContentItem[]; contentTypeColor: ContentTypeColor }) => {
     return (

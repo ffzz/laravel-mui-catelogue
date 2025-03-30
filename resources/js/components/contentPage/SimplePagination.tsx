@@ -34,7 +34,7 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({ page, setPage, meta
             >
                 Previous
             </Button>
-            <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="body1" component="span" sx={{ display: 'flex', alignItems: 'center' }}>
                 Page <Chip label={metadata.currentPage} color="primary" size="small" sx={{ mx: 1, fontWeight: 600 }} /> of{' '}
                 <Chip label={metadata.totalPages} color="default" size="small" sx={{ ml: 1, fontWeight: 600 }} />
             </Typography>

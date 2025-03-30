@@ -20,7 +20,7 @@ const PageHeader = ({ title }: { title?: string }) => {
             }}
         >
             {title && (
-                <Typography variant="h1" sx={{ fontSize: '2rem' }}>
+                <Typography variant="h1" sx={{ fontSize: '2rem', fontWeight: 500 }}>
                     {title}
                 </Typography>
             )}

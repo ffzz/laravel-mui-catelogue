@@ -1,15 +1,15 @@
+import ContentFilter from '@/components/contentPage/ContentFilter';
+import ContentGrid from '@/components/contentPage/ContentGrid';
+import Intro from '@/components/contentPage/Intro';
+import SimplePagination from '@/components/contentPage/SimplePagination';
+import ErrorDisplay from '@/components/ErrorDisplay';
+import LoadingContent from '@/components/LoadingContent';
+import NoContentDisplay from '@/components/NoContentDisplay';
 import useContentTypeFilter from '@/hooks/useContentTypeFilter';
 import { useApiCreate, useApiQuery } from '@/lib/api/hooks';
 import { ContentListResponse, RefreshCacheResponse } from '@/types/content';
 import { Container, SelectChangeEvent } from '@mui/material';
 import React, { useState } from 'react';
-import ContentFilter from './ContentFilter';
-import ContentGrid from './ContentGrid';
-import ErrorDisplay from './ErrorDisplay';
-import Intro from './Intro';
-import LoadingContent from './LoadingContent';
-import NoContentDisplay from './NoContentDisplay';
-import SimplePagination from './SimplePagination';
 
 const ContentList: React.FC = () => {
     const [noCache, setNoCache] = useState<boolean>(false);

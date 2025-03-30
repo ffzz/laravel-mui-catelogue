@@ -1,3 +1,4 @@
+import { ContentTypeColor } from '@/types/content';
 import CachedIcon from '@mui/icons-material/Cached';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import MemoryIcon from '@mui/icons-material/Memory';
@@ -15,7 +16,6 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-
 const ContentFilter: React.FC<{
     noCache: boolean;
     setNoCache: (noCache: boolean) => void;
@@ -25,13 +25,13 @@ const ContentFilter: React.FC<{
     contentTypeOptions: { value: string; label: string }[];
     handleContentTypeChange: (event: SelectChangeEvent<string>) => void;
     contentType: string;
-    contentTypeColor: 'primary' | 'secondary' | 'default' | 'error' | 'info' | 'success' | 'warning';
+    contentTypeColor: ContentTypeColor;
 }> = ({ noCache, setNoCache, handleRefreshCache, contentTypeOptions, handleContentTypeChange, contentType, contentTypeColor, refreshing }) => {
     const theme = useTheme();
 
     return (
         <Box mb={4}>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="h4" component="h2" gutterBottom>
                 Content Catalogue
                 <Chip
                     label={contentType || 'All Types'}

@@ -1,4 +1,4 @@
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/contentPage/PageHeader';
 import { type ContentLayoutProps } from '@/types/content';
 import { Head } from '@inertiajs/react';
 import { Box, Container, Paper, useTheme } from '@mui/material';
