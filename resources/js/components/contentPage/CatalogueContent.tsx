@@ -92,7 +92,7 @@ const CatalogueContent: React.FC = () => {
                     <NoContentDisplay />
                 ) : (
                     <>
-                        <ContentGrid contents={contents} contentTypeColor={contentTypeColor} />
+                        <ContentGrid contents={contents} />
                         {metadata && <SimplePagination page={page} setPage={setPage} perPage={perPage} setPerPage={setPerPage} metadata={metadata} />}
                     </>
                 )}

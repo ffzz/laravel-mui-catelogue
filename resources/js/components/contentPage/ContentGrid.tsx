@@ -1,8 +1,8 @@
 import ItemCard from '@/components/card/ItemCard';
-import { ContentItem, ContentTypeColor } from '@/types/content';
+import { ContentItem } from '@/types/content';
 import { Box } from '@mui/material';
 
-const ContentGrid = ({ contents, contentTypeColor }: { contents: ContentItem[]; contentTypeColor: ContentTypeColor }) => {
+const ContentGrid = ({ contents }: { contents: ContentItem[] }) => {
     return (
         <Box
             display="grid"
@@ -15,7 +15,7 @@ const ContentGrid = ({ contents, contentTypeColor }: { contents: ContentItem[]; 
             gap={3}
         >
             {contents.map((content: ContentItem) => (
-                <ItemCard key={content.id} content={content} contentTypeColor={contentTypeColor} />
+                <ItemCard key={content.id} content={content} />
             ))}
         </Box>
     );

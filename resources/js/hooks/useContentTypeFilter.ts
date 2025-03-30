@@ -1,9 +1,9 @@
 import { ContentType } from '@/enums/ContentType';
 import { ContentTypeColor } from '@/types/content';
 import { useState } from 'react';
-const useContentTypeFilter = () => {
+const useContentTypeFilter = (colour: ContentTypeColor = 'primary') => {
     const [contentType, setContentType] = useState<string>('');
-    const [contentTypeColor, setContentTypeColor] = useState<ContentTypeColor>('primary');
+    const [contentTypeColor, setContentTypeColor] = useState<ContentTypeColor>(colour);
 
     // Function to update content type filter
     const onContentTypeChange = (type: string) => {
@@ -27,7 +27,7 @@ const useContentTypeFilter = () => {
 };
 
 // Function to determine color based on content type
-const getContentTypeColor = (contentType: string): 'primary' | 'secondary' | 'default' | 'error' | 'info' | 'success' | 'warning' => {
+export const getContentTypeColor = (contentType: string): ContentTypeColor => {
     switch (contentType.toLowerCase()) {
         case ContentType.COURSE:
             return 'primary';

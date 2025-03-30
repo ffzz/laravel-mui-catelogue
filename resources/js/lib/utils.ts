@@ -1,6 +1,6 @@
 import DOMPurify from 'dompurify';
 
-// 根据contentStatus确定状态点颜色
+// get status color
 const getStatusColor = (status: string) => {
     if (status === 'Active' || status === 'active') return 'success';
     if (status === 'Pending' || status === 'pending') return 'warning';
@@ -12,6 +12,9 @@ const removeSpecialSymbols = (name: string) => {
 };
 
 const formattedDate = (date: string) => {
+    // if date is not a string, return empty string
+    if (!date || typeof date !== 'string') return '';
+
     return new Date(date).toLocaleDateString('en-AU', {
         year: 'numeric',
         month: 'short',
@@ -19,7 +22,7 @@ const formattedDate = (date: string) => {
     });
 };
 
-// 安全渲染HTML内容
+// safe render html content
 const createSafeHtml = (html: string) => {
     const cleanHtml = DOMPurify.sanitize(html);
     return { __html: cleanHtml };

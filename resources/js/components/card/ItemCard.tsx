@@ -1,11 +1,13 @@
-import { ContentItem, ContentTypeColor } from '@/types/content';
-
 import { CardActionButtons, CardImage, CardSummary, CardTitle } from '@/components/card';
+import { getContentTypeColor } from '@/hooks/useContentTypeFilter';
 import { formattedDate, removeSpecialSymbols } from '@/lib/utils';
+import { ContentItem } from '@/types/content';
 import { Card, CardActions, CardContent, Chip, Fade } from '@mui/material';
 
-const ItemCard = ({ content, contentTypeColor }: { content: ContentItem; contentTypeColor: ContentTypeColor }) => {
+const ItemCard = ({ content }: { content: ContentItem }) => {
     const displayName = removeSpecialSymbols(content?.fullname);
+
+    const contentTypeColor = getContentTypeColor(content?.contentType);
 
     const updatedDate = content.formatted_date?.modified || formattedDate(content?.timeModified);
 
