@@ -13,7 +13,7 @@ return [
     'api' => [
         'base_url' => env('ACORN_API_BASE_URL', 'https://staging.acornlms.com'),
         'tenancy_id' => env('ACORN_API_TENANCY_ID', '3'),
-        'token' => env('ACORN_API_TOKEN', 'WTZ1RHJ3RjdPOW95N0tDT1pvWFNwR2tTQ042ejBKVHVMRUdsTE1PRQ=='),
+        'token' => env('ACORN_API_TOKEN'),
         'version' => env('ACORN_API_VERSION', '1.1'),
         'per_page' => env('ACORN_API_PER_PAGE', 10),
     ],
