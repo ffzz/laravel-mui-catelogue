@@ -1,0 +1,15 @@
+packages:
+  - .
+  - packages/**
+  - '!**/node_modules/**'
+  - '!**/vendor/**'
+  - '!**/dist/**'
+  - '!**/build/**'
+  - '!**/test/**'
+  - '!**/tests/**'
+  - '!**/.git/**'
+  - '!**/coverage/**'
+  - '!**/docs/**'
+  - '!**/examples/**'
+  - '!**/.github/**'
+  - '!**/.vscode/**'
