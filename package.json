@@ -18,7 +18,9 @@
         "test": "vitest run",
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
-        "test:backend": "php artisan test"
+        "test:backend": "php artisan test",
+        "add:root": "pnpm add -w",
+        "add:client": "pnpm add --filter client"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.8.0",
@@ -50,6 +52,7 @@
         "@tanstack/eslint-plugin-query": "^5.68.0",
         "@tanstack/react-query": "^5.70.0",
         "@tanstack/react-query-devtools": "^5.70.0",
+        "@types/dompurify": "3.2.0",
         "@types/node": "^22.13.14",
         "@types/react": "^19.0.12",
         "@types/react-dom": "^19.0.4",
@@ -58,6 +61,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "concurrently": "^9.1.2",
+        "dompurify": "3.2.4",
         "globals": "^16.0.0",
         "jsdom": "^26.0.0",
         "laravel-vite-plugin": "^1.2.0",
