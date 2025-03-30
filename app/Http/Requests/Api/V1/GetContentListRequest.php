@@ -15,6 +15,21 @@ class GetContentListRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('noCache')) {
+            $noCache = $this->input('noCache');
+            // Convert various possible string values to boolean
+            if (is_string($noCache)) {
+                $noCache = filter_var($noCache, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                $this->merge(['noCache' => $noCache]);
+            }
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, array<int, mixed>>

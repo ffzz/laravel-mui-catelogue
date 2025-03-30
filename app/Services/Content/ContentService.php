@@ -65,17 +65,23 @@ class ContentService
             return false;
         }
 
-        // Get cache metadata to determine when it was created
-        $metadata = Cache::getMetadata($cacheKey);
-        if (!$metadata) {
+        // Get cached data and check if it contains the _cached_at field
+        $cachedData = Cache::get($cacheKey);
+        if (!is_array($cachedData) || !isset($cachedData['_cached_at'])) {
             return false;
         }
 
-        // Calculate how much time has elapsed (as a percentage of TTL)
-        $ttl = $metadata['ttl'] ?? 0;
-        $createdAt = $metadata['time'] ?? 0;
+        // Calculate the elapsed time the cache has existed (as a percentage of TTL)
+        $cachedAt = $cachedData['_cached_at'];
         $now = time();
-        $elapsedTime = $now - $createdAt;
+        $elapsedTime = $now - $cachedAt;
+
+        // Get the cache TTL for this content type
+        $contentType = null;
+        if (isset($cachedData['items'][0]['contentType'])) {
+            $contentType = $cachedData['items'][0]['contentType'];
+        }
+        $ttl = $this->getCacheTtlByContentType($contentType);
 
         if ($ttl <= 0) {
             return false;
@@ -83,7 +89,7 @@ class ContentService
 
         $elapsedPercentage = $elapsedTime / $ttl;
 
-        // If elapsed time exceeds our threshold, we should refresh
+        // If the elapsed time exceeds our threshold, we should refresh
         return $elapsedPercentage >= $this->refreshThreshold;
     }
 
