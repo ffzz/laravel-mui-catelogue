@@ -38,7 +38,7 @@ php artisan key:generate
 # Configure .env with your Acorn API credentials
 # ACORN_API_BASE_URL=https://staging.acornlms.com
 # ACORN_API_TENANCY_ID=3
-# ACORN_API_TOKEN=WTZ1RHJ3RjdPOW95N0tDT1pvWFNwR2tTQ042ejBKVHVMRUdsTE1PRQ==
+# ACORN_API_TOKEN=
 
 # Run migrations (if applicable)
 php artisan migrate
@@ -46,6 +46,75 @@ php artisan migrate
 # Build assets
 npm run dev
 ```
+
+## Docker Development Environment
+
+This project has been fully Dockerised to establish a consistent development environment for all team members. The Docker setup ensures that everyone on the team works with identical development conditions regardless of their local machine setup.
+
+### Setting Up the Development Environment with Docker
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/laravel-mui-catalogue.git
+cd laravel-mui-catalogue
+
+# Copy the environment configuration file
+cp .env.docker .env
+
+# Modify .env configuration as needed, particularly the Redis settings
+
+# Build and start the development containers
+docker-compose up -d
+
+# Check the container status
+docker-compose ps
+```
+
+Visit http://localhost:8000 to access the development environment.
+
+### Development Container Services
+
+The Docker development environment includes the following services:
+
+1. **app** - Laravel PHP application service
+2. **web** - Nginx web server
+3. **redis** - Redis for caching and queue services
+4. **queue** - Laravel queue worker
+5. **scheduler** - Laravel scheduler service
+
+### Common Docker Commands for Development
+
+```bash
+# Start all services
+docker-compose up -d
+
+# Stop all services
+docker-compose down
+
+# View service logs
+docker-compose logs -f
+
+# View logs for a specific service
+docker-compose logs -f app
+
+# Access the application container
+docker-compose exec app sh
+
+# Run Artisan commands in the container
+docker-compose exec app php artisan list
+```
+
+### Customising Redis Configuration for Development
+
+The default configuration uses the Redis service within the container. If you need to connect to an external Redis service, modify the following settings in your `.env` file:
+
+```
+REDIS_HOST=your-redis-host
+REDIS_PASSWORD=your-redis-password
+REDIS_PORT=6379
+```
+
+Note: If using a custom Redis service, you may also need to modify the queue, cache, and session driver configurations.
 
 ## Usage
 
