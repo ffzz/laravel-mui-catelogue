@@ -43,6 +43,8 @@ interface ContentListResponse {
         currentPage: number;
         totalPages: number;
         totalItems: number;
+        nextPageUrl?: string | null;
+        previousPageUrl?: string | null;
     };
 }
 

@@ -238,7 +238,7 @@ class ContentService
             'totalItems' => $data['total_items'] ?? count($items),
             'currentPage' => $data['current_page'] ?? $page,
             'perPage' => $data['per_page'] ?? $perPage,
-            'totalPages' => $data['total_pages'] ?? ceil(count($items) / ($perPage ?: 10)),
+            'totalPages' => $data['total_pages'] ?? ceil(($data['total_items'] ?? count($items)) / ($perPage ?: 10)),
             'nextPageUrl' => $data['next_page_url'] ?? null,
             'previousPageUrl' => $data['previous_page_url'] ?? null,
         ];

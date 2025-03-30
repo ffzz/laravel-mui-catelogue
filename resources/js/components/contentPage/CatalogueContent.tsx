@@ -6,12 +6,13 @@ import useContentTypeFilter from '@/hooks/useContentTypeFilter';
 import { useApiCreate, useApiQuery } from '@/lib/api/hooks';
 import { ContentListResponse, RefreshCacheResponse } from '@/types/content';
 import { Container, SelectChangeEvent } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const ContentList: React.FC = () => {
+const CatalogueContent: React.FC = () => {
     const [noCache, setNoCache] = useState<boolean>(false);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(10);
 
     const { contentType, contentTypeColor, contentTypeOptions = [], onContentTypeChange } = useContentTypeFilter();
 
@@ -22,17 +23,22 @@ const ContentList: React.FC = () => {
 
     // Use our custom hook to fetch content list
     const { data, isLoading, isError, error, refetch } = useApiQuery<ContentListResponse>(
-        ['content', contentType, String(page), String(noCache)],
+        ['content', contentType, String(page), String(perPage), String(noCache)],
         '/content',
         {
             contentType: contentType || undefined,
             page,
-            perPage: 10,
+            perPage,
             noCache: noCache || undefined,
         },
     );
 
     const { items: contents = [], metadata = { currentPage: 1, totalPages: 1 } } = data?.data || {};
+
+    // Update API call when perPage changes
+    useEffect(() => {
+        refetch();
+    }, [perPage, refetch]);
 
     // Use API create hook for refreshing cache
     const refreshCacheMutation = useApiCreate<RefreshCacheResponse>({
@@ -87,7 +93,7 @@ const ContentList: React.FC = () => {
                 ) : (
                     <>
                         <ContentGrid contents={contents} contentTypeColor={contentTypeColor} />
-                        {metadata && <SimplePagination page={page} setPage={setPage} metadata={metadata} />}
+                        {metadata && <SimplePagination page={page} setPage={setPage} perPage={perPage} setPerPage={setPerPage} metadata={metadata} />}
                     </>
                 )}
             </Container>
@@ -95,4 +101,4 @@ const ContentList: React.FC = () => {
     );
 };
 
-export default ContentList;
+export default CatalogueContent;
