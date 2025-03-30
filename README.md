@@ -300,3 +300,9 @@ Verifies application functionality on every push and pull request:
 - Configures mock API endpoints for isolated testing
 
 These automated checks help us maintain code quality and prevent regressions, ensuring the codebase stays clean and maintainable.
+
+## 🖼️ Application UI
+
+Below is a screenshot of the application user interface showing the content catalogue:
+
+<img src="public/readme-images/UI.jpg" alt="Application User Interface" width="800"/>
