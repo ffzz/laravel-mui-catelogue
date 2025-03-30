@@ -23,12 +23,13 @@ class AcornServiceProvider extends ServiceProvider
 
         // Register Acorn API Service
         $this->app->singleton(AcornApiService::class, function ($app) {
-            // Only use mock service in testing environment, not in debug mode
+            // Always use mock service in testing environment
             if (App::environment('testing')) {
-                return new MockAcornApiService($app->make(HttpClientService::class));
+                $service = new MockAcornApiService($app->make(HttpClientService::class));
+                return $service;
             }
 
-            // Use real service in all other environments (including debug mode)
+            // Use real service in all other environments
             return new AcornApiService($app->make(HttpClientService::class));
         });
 

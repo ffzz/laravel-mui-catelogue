@@ -127,7 +127,10 @@ class MockAcornApiService extends AcornApiService
                 $item = reset($items);
                 return [
                     'success' => true,
-                    'data' => $item,
+                    'data' => [
+                        'status' => 'Complete',
+                        'data' => $item
+                    ],
                     'status_code' => 200,
                 ];
             } else {
@@ -170,7 +173,10 @@ class MockAcornApiService extends AcornApiService
 
         return [
             'success' => true,
-            'data' => $mockData,
+            'data' => [
+                'status' => 'Complete',
+                'data' => $mockData
+            ],
             'status_code' => 200,
         ];
     }

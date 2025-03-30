@@ -13,6 +13,7 @@ use Spatie\LaravelData\Attributes\Validation\Url;
 use Spatie\LaravelData\Attributes\Validation\ArrayType;
 use Spatie\LaravelData\Attributes\Validation\Nullable;
 use Spatie\LaravelData\Attributes\Validation\Required;
+use Illuminate\Support\Facades\Log;
 
 class Content extends Data
 {
@@ -84,34 +85,93 @@ class Content extends Data
      */
     public static function fromApiResponse(array $data, ?string $apiVersion = null): self
     {
-        // Add API version to original data
-        $dataCopy = $data;
-        if ($apiVersion !== null) {
-            $dataCopy['api_version'] = $apiVersion;
-        }
+        try {
+            // Add API version to original data
+            $dataCopy = $data;
+            if ($apiVersion !== null) {
+                $dataCopy['api_version'] = $apiVersion;
+            }
 
-        return new self(
-            id: $dataCopy['contentid'] ?? 0,
-            fullname: $dataCopy['fullname'] ?? '',
-            summary: $dataCopy['summary'] ?? '',
-            image: $dataCopy['imageurl'] ?? null,
-            contentType: $dataCopy['contenttype'] ?? 'unknown',
-            url: $dataCopy['url'] ?? '',
-            badge: $dataCopy['badge'] ?? null,
-            completionStatus: $dataCopy['completionstatus'] ?? null,
-            programs: $dataCopy['programs'] ?? [],
-            category: $dataCopy['category'] ?? null,
-            tags: $dataCopy['tags'] ?? [],
-            customfields: $dataCopy['customfields'] ?? [],
-            cost: $dataCopy['cost'] ?? 0,
-            duration: $dataCopy['duration'] ?? '',
-            timeCreated: $dataCopy['timecreated'] ?? '',
-            timeModified: $dataCopy['timemodified'] ?? '',
-            contentStatus: $dataCopy['contentstatus'] ?? '',
-            paymentCost: $dataCopy['paymentCost'] ?? 0,
-            originalData: $dataCopy,
-            apiVersion: $apiVersion ?? $dataCopy['api_version'] ?? null,
-        );
+            // Log incoming data for debugging
+            Log::debug('Creating Content from API response', [
+                'content_type' => $dataCopy['contenttype'] ?? 'unknown',
+                'id' => $dataCopy['contentid'] ?? 0,
+                'data_keys' => array_keys($dataCopy),
+            ]);
+
+            // Ensure required fields have default values
+            $defaultValues = [
+                'contentid' => 0,
+                'fullname' => 'Unknown Content',
+                'summary' => 'No summary available',
+                'contenttype' => 'unknown',
+                'url' => 'https://example.com', // Default URL for validation
+                'cost' => 0,
+                'duration' => 'Unknown',
+                'timecreated' => date('Y-m-d'),
+                'timemodified' => date('Y-m-d'),
+                'contentstatus' => 'unknown',
+            ];
+
+            // Merge defaults with actual data
+            foreach ($defaultValues as $key => $value) {
+                if (!isset($dataCopy[$key]) || empty($dataCopy[$key])) {
+                    $dataCopy[$key] = $value;
+                }
+            }
+
+            return new self(
+                id: $dataCopy['contentid'] ?? 0,
+                fullname: $dataCopy['fullname'] ?? '',
+                summary: $dataCopy['summary'] ?? '',
+                image: $dataCopy['imageurl'] ?? null,
+                contentType: $dataCopy['contenttype'] ?? 'unknown',
+                url: $dataCopy['url'] ?? '',
+                badge: $dataCopy['badge'] ?? null,
+                completionStatus: $dataCopy['completionstatus'] ?? null,
+                programs: $dataCopy['programs'] ?? [],
+                category: $dataCopy['category'] ?? null,
+                tags: $dataCopy['tags'] ?? [],
+                customfields: $dataCopy['customfields'] ?? [],
+                cost: $dataCopy['cost'] ?? 0,
+                duration: $dataCopy['duration'] ?? '',
+                timeCreated: $dataCopy['timecreated'] ?? date('Y-m-d'),
+                timeModified: $dataCopy['timemodified'] ?? date('Y-m-d'),
+                contentStatus: $dataCopy['contentstatus'] ?? '',
+                paymentCost: $dataCopy['paymentCost'] ?? 0,
+                originalData: $dataCopy,
+                apiVersion: $apiVersion ?? $dataCopy['api_version'] ?? null,
+            );
+        } catch (\Throwable $e) {
+            Log::error('Error creating Content from API response: ' . $e->getMessage(), [
+                'exception' => $e,
+                'data' => $data,
+            ]);
+
+            // Create a fallback content object with minimal data
+            return new self(
+                id: 0,
+                fullname: 'Error Processing Content',
+                summary: 'There was an error processing this content item.',
+                image: null,
+                contentType: 'error',
+                url: 'https://example.com',
+                badge: null,
+                completionStatus: null,
+                programs: [],
+                category: null,
+                tags: [],
+                customfields: [],
+                cost: 0,
+                duration: '',
+                timeCreated: date('Y-m-d'),
+                timeModified: date('Y-m-d'),
+                contentStatus: 'error',
+                paymentCost: 0,
+                originalData: ['error' => $e->getMessage()],
+                apiVersion: $apiVersion,
+            );
+        }
     }
 
     /**

@@ -366,13 +366,20 @@ class ContentService
         // Process data
         $data = $response['data'];
 
-        // Check if we have a direct content item or a list with one item
-        if (isset($data['items']) && is_array($data['items']) && count($data['items']) > 0) {
-            // It's a list, get the first item
-            $contentData = ContentDataFactory::createFromData($data['items'][0]);
-        } else if (isset($data['contentid']) || isset($data['id'])) {
+        // Handle different response structures
+        // Structure 1: { status: "Complete", data: { contentid: ..., ... } }
+        if (isset($data['status']) && $data['status'] === 'Complete' && isset($data['data'])) {
+            $contentData = ContentDataFactory::createFromData($data['data']);
+        }
+        // Structure 2: { contentid: ..., ... } or { id: ..., ... }
+        else if (isset($data['contentid']) || isset($data['id'])) {
             // It's a direct content item
             $contentData = ContentDataFactory::createFromData($data);
+        }
+        // Structure 3: { items: [...], ... } - get first item
+        else if (isset($data['items']) && is_array($data['items']) && count($data['items']) > 0) {
+            // It's a list, get the first item
+            $contentData = ContentDataFactory::createFromData($data['items'][0]);
         } else {
             Log::error('Invalid content item data format', [
                 'id' => $id,

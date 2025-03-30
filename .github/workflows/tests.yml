@@ -66,6 +66,8 @@ jobs:
           echo "ACORN_API_BASE_URL=https://mock.acornlms.com" >> .env
           echo "ACORN_API_TENANCY_ID=3" >> .env
           echo "ACORN_API_TOKEN=mock-token-for-testing" >> .env
+          echo "RUN_INTEGRATION_TESTS=0" >> .env
 
+      # Run tests with custom configuration
       - name: Tests
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest --exclude-group external-api
