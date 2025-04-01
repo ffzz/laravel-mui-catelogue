@@ -1,10 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return Inertia::render('ContentPage');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-require __DIR__ . '/api.php';
+// require __DIR__ . '/api.php';

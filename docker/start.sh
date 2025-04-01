@@ -1,8 +1,11 @@
 #!/bin/sh
 set -e
 
-# Install netcat tool
-apk add --no-cache netcat-openbsd
+# 网络工具已在Dockerfile中安装
+
+# 添加pnpm store路径
+curl -fsSL https://get.pnpm.io/install.sh | SHELL=sh env -
+export PATH="$PATH:$HOME/.local/share/pnpm"
 
 # Wait for Redis to be ready
 until nc -z -v -w30 redis 6379; do
@@ -25,10 +28,16 @@ else
   echo "Using existing APP_KEY from environment"
 fi
 
-# Check if Telescope is available and install it if needed
+# 智能安装Telescope
 if [ "$APP_ENV" != "production" ]; then
-  composer require --dev laravel/telescope || echo "Could not install Telescope, continuing anyway..."
-  php artisan telescope:install || echo "Could not install Telescope migrations, continuing anyway..."
+  # 检查Telescope是否已安装
+  if ! grep -q "laravel/telescope" composer.json; then
+    echo "Installing Telescope package..."
+    composer require --dev laravel/telescope
+    php artisan telescope:install
+  else
+    echo "Telescope already installed, skipping installation."
+  fi
 fi
 
 # Run database migrations

@@ -12,8 +12,8 @@ Route::get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     // Content routes
     Route::prefix('content')->group(function () {
-        Route::get('/', [ContentController::class, 'index'])->name('content.index');
-        Route::get('/{id}', [ContentController::class, 'show'])->where('id', '[0-9]+')->name('content.show');
-        Route::post('/refresh-cache', [ContentController::class, 'refreshCache'])->name('content.refresh-cache');
+        Route::get('/', [ContentController::class, 'index'])->name('api.content.index');
+        Route::get('/{id}', [ContentController::class, 'show'])->where('id', '[0-9]+')->name('api.content.show');
+        Route::post('/refresh-cache', [ContentController::class, 'refreshCache'])->name('api.content.refresh-cache');
     });
 });

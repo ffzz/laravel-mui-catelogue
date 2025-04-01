@@ -11,9 +11,14 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./storage:/var/www/html/storage
+      - pnpm-store:/pnpm-store
     environment:
       - APP_ENV=local
       - APP_KEY=${APP_KEY:-base64:4tszo/3aFh4oJXamgq7o1lAvcQTKmslejKGH7oi5MSY=}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PNPM_HOME=/root/.local/share/pnpm
+      - PNPM_STORE_PATH=/pnpm-store
     depends_on:
       - redis
     networks:
@@ -45,6 +50,11 @@ services:
       - redis-data:/data
     networks:
       - app-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
   # Queue worker
   queue:
@@ -67,22 +77,37 @@ services:
       - app-network
 
   # Scheduler
-  scheduler:
+  # scheduler:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: laravel-mui-scheduler
+  #   restart: unless-stopped
+  #   working_dir: /var/www/html
+  #   entrypoint: ['sh', '-c', 'while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done']
+  #   volumes:
+  #     - ./storage:/var/www/html/storage
+  #   environment:
+  #     - APP_ENV=local
+  #     - APP_KEY=${APP_KEY:-base64:4tszo/3aFh4oJXamgq7o1lAvcQTKmslejKGH7oi5MSY=}
+  #   depends_on:
+  #     - app
+  #     - redis
+  #   networks:
+  #     - app-network
+
+  vite:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel-mui-scheduler
-    restart: unless-stopped
-    working_dir: /var/www/html
-    entrypoint: ['sh', '-c', 'while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done']
+    command: pnpm dev
+    ports:
+      - '5173:5173'
     volumes:
-      - ./storage:/var/www/html/storage
+      - ./:/var/www/html
+      - /var/www/html/node_modules
     environment:
-      - APP_ENV=local
-      - APP_KEY=${APP_KEY:-base64:4tszo/3aFh4oJXamgq7o1lAvcQTKmslejKGH7oi5MSY=}
-    depends_on:
-      - app
-      - redis
+      - VITE_APP_URL=http://localhost:8000
     networks:
       - app-network
 
@@ -93,3 +118,4 @@ networks:
 
 volumes:
   redis-data:
+  pnpm-store:

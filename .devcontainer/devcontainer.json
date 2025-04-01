@@ -3,6 +3,7 @@
     "dockerComposeFile": "../docker-compose.yml",
     "service": "app",
     "workspaceFolder": "/var/www/html",
+    "runArgs": ["--platform=linux/amd64"],
     "customizations": {
         "vscode": {
             "settings": {
@@ -21,6 +22,7 @@
         }
     },
     "forwardPorts": [8000, 6379, 9003],
-    "remoteUser": "www-data",
-    "postCreateCommand": "composer install && php artisan key:generate"
+    "remoteUser": "root",
+    "postCreateCommand": "composer install && php artisan key:generate",
+    "mounts": ["source=pnpm-store,target=/pnpm-store,type=volume"]
 }
